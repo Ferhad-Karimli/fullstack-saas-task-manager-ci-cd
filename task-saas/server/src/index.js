@@ -5,21 +5,18 @@ const cors = require('cors');
 const connectDB = require('./config/db');
 require('dotenv').config();
 
-
-
-// Middleware-lər
+// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Basic route test üçün
-const authRoutes = require('./routes/auth/signUp');
-app.use('/api/register', authRoutes);
-const loginRoutes =  require('./routes/auth/login') ;
-app.use('/', loginRoutes);
+const signUpRoutes = require('./routes/auth/signUp');
+const loginRoutes = require('./routes/auth/login');
 
-// Serveri işə sal
+app.use('/api/signup', signUpRoutes);
+app.use('/api/login', loginRoutes);
+
 connectDB().then(() => {
-  app.listen(3000, () => {
-    console.log('Server is running on port 3000');
+  app.listen(3001, () => {
+    console.log('Server is running on port 3001');
   });
 });

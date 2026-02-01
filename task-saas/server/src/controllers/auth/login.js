@@ -1,26 +1,31 @@
-const { SignUpSchema } = require('../../models/auth/signUp');
+const { UserSchema } = require('../../models/auth/userModel');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { loginValidate } = require('../../validators/loginValidator');
+require('dotenv').config();
 
 exports.login = async (req, res) => {
   try {
-    
     const { email, password } = req.body;
-    const user = await SignUpSchema.findOne({ email });
+    const { error } = loginValidate(req.body);
+    if (error) {
+      return res.status(400).json({ message: error.details[0].message });
+    }
+    const user = await UserSchema.findOne({ email });
 
     if (!user) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
-   
+
     if (!isPasswordValid) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
     const token = jwt.sign(
       { id: user._id, email, email: user.email },
-      'SECRET_KEY', 
+      process.env.JWT_SECRET,
       { expiresIn: '1d' }
     );
 
@@ -38,13 +43,11 @@ exports.login = async (req, res) => {
   }
 };
 
-exports.userList = async (req,res) => {
-  try{
-    const users = await  SignUpSchema.find({})
-      res.status(200).json({users})
-
-  }
-  catch(error){
+exports.userList = async (req, res) => {
+  try {
+    const users = await UserSchema.find({});
+    res.status(200).json({ users });
+  } catch (error) {
     res.status(500).json({ message: 'Something went wrong' });
   }
-}
+};
