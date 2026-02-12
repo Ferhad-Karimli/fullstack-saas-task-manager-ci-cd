@@ -7,11 +7,20 @@ const taskSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    description: { type: String, trim: true, maxlength: 2000 },
 
     completed: {
       type: Boolean,
       default: false,
     },
+       priority: {
+      type: String,
+      enum: ['LOW', 'MEDIUM', 'HIGH'],
+      default: 'MEDIUM',
+      index: true,
+    },
+
+    dueDate: { type: Date, index: true },
 
     user: {
       type: mongoose.Schema.Types.ObjectId,
@@ -24,4 +33,5 @@ const taskSchema = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model('Task', taskSchema);
+const TaskSchema = mongoose.model('Task', taskSchema);
+module.exports = { TaskSchema };

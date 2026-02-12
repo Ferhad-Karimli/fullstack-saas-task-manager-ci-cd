@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js",
+    "lint": "eslint .",
+    "test": "echo \"no tests yet\" && exit 0"
   },
   "keywords": [],
   "author": "",

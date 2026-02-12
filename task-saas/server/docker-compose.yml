@@ -1,0 +1,18 @@
+services:
+  api:
+    build: ./server
+    container_name: task_api
+    env_file: ./server/.env
+    depends_on:
+      - mongo
+    ports:
+      - "3001:3001"
+
+  mongo:
+    image: mongo:7
+    container_name: task_mongo
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
