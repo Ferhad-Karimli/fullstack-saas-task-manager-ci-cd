@@ -2,9 +2,9 @@ name: Build & Deploy (API)
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
     paths:
-      - "task-saasserver/**"
+      - "task-saas/server/**"
       - ".github/workflows/deploy.yml"
 
 jobs:
@@ -28,7 +28,7 @@ jobs:
 
       - name: Build & Push API image
         run: |
-          docker build -t ghcr.io/${{ secrets.GHCR_USER }}/fullstack-saas-task-manager-ci-cd-api:latest ./server
+          docker build -t ghcr.io/${{ secrets.GHCR_USER }}/fullstack-saas-task-manager-ci-cd-api:latest ./task-saas/server
           docker push ghcr.io/${{ secrets.GHCR_USER }}/fullstack-saas-task-manager-ci-cd-api:latest
 
       - name: Deploy on VPS
