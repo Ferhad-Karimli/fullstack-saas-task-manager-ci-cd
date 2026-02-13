@@ -1,14 +1,14 @@
-name: Build & Deploy (WEB)
+name: Build & Deploy (Web)
 
 on:
   push:
     branches: ["main"]
     paths:
-      - "task-saas/client/**"
+      - "task-saas/client/my-app/**"
       - ".github/workflows/deploy-web.yml"
 
 jobs:
-  build_and_deploy_web:
+  build_and_deploy:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -17,7 +17,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Login to GHCR
+      - name: Lowercase owner
+        run: echo "OWNER_LC=$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
+      - name: Log in to GHCR
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -26,9 +29,8 @@ jobs:
 
       - name: Build & Push WEB image
         run: |
-          OWNER=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
-          IMAGE=ghcr.io/$OWNER/fullstack-saas-task-manager-ci-cd-web:latest
-          docker build -t $IMAGE ./task-saas/client
+          IMAGE=ghcr.io/${OWNER_LC}/fullstack-saas-task-manager-ci-cd-web:latest
+          docker build -t $IMAGE ./task-saas/client/my-app
           docker push $IMAGE
 
       - name: Deploy on VPS
@@ -39,7 +41,7 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
             cd ~/app
-            docker login ghcr.io -u "${{ github.actor }}" -p "${{ secrets.GITHUB_TOKEN }}"
+            docker login ghcr.io -u "${{ secrets.GHCR_USER }}" -p "${{ secrets.GHCR_PAT }}"
             docker compose -f docker-compose.prod.yml pull web
             docker compose -f docker-compose.prod.yml up -d --remove-orphans
             docker image prune -f
