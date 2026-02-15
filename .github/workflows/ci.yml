@@ -26,14 +26,14 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: task-saas/client
+        working-directory: task-saas/client/my-app
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
-          cache-dependency-path: task-saas/client/package-lock.json
+          cache-dependency-path: task-saas/client/my-app/package-lock.json
       - run: npm ci
       - run: npm run lint --if-present
       - run: npm test --if-present
