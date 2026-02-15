@@ -73,10 +73,10 @@ export default function Tasks() {
     clearToken();
     nav("/login", { replace: true });
   }
-
+// eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     load();
-  }, []);
+  }, [load]);
 
   return (
     <div className="min-h-screen bg-slate-50 px-4 py-8">
