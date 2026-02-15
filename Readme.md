@@ -17,6 +17,9 @@ This project runs on a single VPS:
 - **Auto Deployment (CD)**: GitHub Actions builds Docker images and deploys to VPS automatically
 
 ---
+<img src="./task-saas/client/my-app/src/assets/CI & CD.png" alt="App Screenshot" width="700" />
+<img src="./task-saas/client/my-app/src/assets/CI Front END & BACK END.png" alt="App Screenshot" width="700" />
+
 
 ## ✨ Features
 
