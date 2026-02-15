@@ -10,7 +10,6 @@ export default function App() {
       <Routes>
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
-
         <Route
           path="/tasks"
           element={
@@ -19,7 +18,6 @@ export default function App() {
             </ProtectedRoute>
           }
         />
-
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>
